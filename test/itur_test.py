@@ -36,6 +36,7 @@ def suite():
     suite.addTest(TestFunctionsRecommendation1510('test_1510'))
     suite.addTest(TestFunctionsRecommendation1511('test_1511'))
     suite.addTest(TestFunctionsRecommendation1623('test_1623'))
+    suite.addTest(TestFunctionsRecommendation1814('test_1814'))
     suite.addTest(TestFunctionsRecommendation1853('test_1853'))
 
     # Basic import module functionality
@@ -44,6 +45,7 @@ def suite():
     suite.addTest(TestImportModules('test_import_itur_plotting'))
     suite.addTest(TestImportModules('test_import_itur_models'))
     suite.addTest(TestImportModules('test_import_itur_models_1853'))
+    suite.addTest(TestImportModules('test_import_itur_models_1814'))
     suite.addTest(TestImportModules('test_import_itur_models_1623'))
     suite.addTest(TestImportModules('test_import_itur_models_1511'))
     suite.addTest(TestImportModules('test_import_itur_models_1510'))
@@ -91,6 +93,8 @@ def suite():
 class TestVersions(test.TestCase):
 
     def test_change_to_not_implemented_versions(self):
+
+        self.assertRaises(ValueError, models.itu1814.change_version,0)
 
         for i in range(1, 12):
             self.assertRaises(ValueError,
@@ -178,6 +182,9 @@ class TestImportModules(test.TestCase):
     def test_import_itur_models_1853():
         import itur.models.itu1853
 
+    @staticmethod
+    def test_import_itur_models_1814():
+        import itur.models.itu1814
     @staticmethod
     def test_import_itur_models_453():
         import itur.models.itu453
@@ -1036,6 +1043,30 @@ class TestFunctionsRecommendation1623(test.TestCase):
             self.test_all_functions_1623()
             self.assertEqual(models.itu1623.get_version(), version)
 
+class TestFunctionsRecommendation1814(test.TestCase):
+    def setUp(self):
+        self.versions = [1]
+
+    @staticmethod
+    def test_all_functions_1814():
+        capture_surface_diameter_m = 0.1
+        Tx_Rx_distance_km = 1.0
+        beam_divergence_mrad = 1.0
+        rain_rate = 1.0
+        dsd_shape_param = 0
+        path_length = 1.0
+        models.itu1814.calculate_geometrical_attenuation(capture_surface_diameter_m, Tx_Rx_distance_km, beam_divergence_mrad)
+        models.itu1814.specific_attenuation_due_to_rain(1.0,1)
+        models.itu1814.path_attentuation_due_to_rain(rain_rate, dsd_shape_param, path_length)
+
+
+
+    def test_1814(self):
+
+        for version in self.versions:
+            models.itu1814.change_version(version)
+            self.test_all_functions_1814()
+            self.assertEqual(models.itu1814.get_version(), version)
 
 class TestFunctionsRecommendation1853(test.TestCase):
 

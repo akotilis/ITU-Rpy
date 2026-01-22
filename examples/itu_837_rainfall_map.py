@@ -7,6 +7,7 @@ ITU-R P.837-7.
 """
 import itur
 import matplotlib.pyplot as plt
+import cartopy.crs as ccrs
 
 # Set Recommendation ITU-R P.837 to version 7
 itur.models.itu837.change_version(7)
@@ -17,12 +18,13 @@ lat, lon = itur.utils.regular_lat_lon_grid(resolution_lat=0.1,
                                            resolution_lon=0.1)
 
 # Compute the rainfall rate exceeded for 0.01 % of the time.
-p = 0.01
+p = 0.1
 R001 = itur.models.itu837.rainfall_rate(lat, lon, p)
 
 # Display the results in a map
 fig = plt.figure(figsize=(16, 8))
-ax = fig.add_subplot(1, 1, 1)
+ax = fig.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
 m = itur.plotting.plot_in_map(
     R001, lat, lon, cmap='jet', vmin=0, vmax=90, ax=ax,
     cbar_text='Rainfall rate exceeded for 0.01% of an average year [mm/hr]')
+plt.show()

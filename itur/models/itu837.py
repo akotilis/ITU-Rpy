@@ -194,8 +194,10 @@ class _ITU837_7():
                         (np.log(Rref) + 0.7938 - np.log(rii)) / 1.26)
                     P_r_ge_R = np.sum(Nii * P_r_ge_Rii) / 365.25
                     return 100 * (P_r_ge_R / p - 1)
-
-                return bisect(f_Rp, 1e-10, 1000, xtol=1e-5)
+                try:
+                    return bisect(f_Rp, 1e-10, 1000, xtol=1e-5)
+                except ValueError:
+                    return np.nan
 
         fcn = np.vectorize(_ret_fcn)
         return fcn(P0anual).reshape(lat_d.shape)

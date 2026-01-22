@@ -36,6 +36,7 @@ def suite():
     models.itu840.change_version(7)
     models.itu1510.change_version(1)
     models.itu1511.change_version(1)
+    models.itu1814.change_version(1)
 
     # ITU-R P.676 tests (Gaseous attenuation)
     suite.addTest(ITUR676_9TestCase('test_gammaw'))
@@ -91,6 +92,9 @@ def suite():
     # ITU-R P.1511 tests (Topographic altitude)
     suite.addTest(ITUR1511_1TestCase('test_topographic_altitude'))
     suite.addTest(ITUR1511_2TestCase('test_topographic_altitude'))
+
+    #ITU-R P.1814 tests (Prediction methods required for the design of terrestrial free-space optical links)
+    suite.addTest(ITUR1814_1TestCase('test_calculate_geometrical_attenuation'))
 
     return suite
 
@@ -7889,6 +7893,15 @@ class ITUR1511_2TestCase(test.TestCase):
         self.assertAlmostEqual(
             models.itu1511.topographic_altitude(9.05, 38.7).value,
             2.5398618775, places=4)
+
+class ITUR1814_1TestCase(test.TestCase):
+
+    def setUp(self):
+        models.itu1814.change_version(1)
+    def test_calculate_geometrical_attenuation(self):
+        self.assertAlmostEqual(
+            models.itu1814.calculate_geometrical_attenuation(0.5, 10).value,
+        )
 
 
 if __name__ == '__main__':

@@ -111,7 +111,8 @@ def plot_in_map(data, lat=None, lon=None, lat_min=None, lat_max=None,
         fig = plt.figure(figsize=figsize)
         proj = ccrs.PlateCarree(central_longitude=0.0)
         ax = fig.add_subplot(111, projection=proj)
-
+    else:
+        fig = ax.figure
     ax.set_extent([lon_min, lon_max, lat_min, lat_max],
                   crs=ccrs.PlateCarree())
     ax.coastlines(color='grey', linewidth=0.8)
